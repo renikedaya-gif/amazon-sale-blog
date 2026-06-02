@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Amazon お買い得情報まとめ</title>
+  <meta name="description" content="リアルタイム更新！今日のセール・割引商品を厳選紹介">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ヘッダー -->
+<header class="site-header">
+  <div class="header-inner">
+    <div class="header-logo">
+      <span class="logo-icon">🛒</span>
+      <div>
+        <h1 class="site-title">Amazon お買い得情報まとめ</h1>
+        <p class="site-subtitle">リアルタイム更新！今日のセール・割引商品を厳選紹介</p>
+      </div>
+    </div>
+    <div class="header-meta">
+      <div class="update-time">
+        <span class="pulse"></span>
+        最終更新: <strong id="updated-at">2026年06月02日 08:55</strong>
+      </div>
+      <div class="total-count">
+        <strong>15</strong> 件のセール商品
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- カテゴリ統計 -->
+<section class="stats-section">
+  <div class="container">
+    <h2 class="section-title">📊 ジャンル別セール概要</h2>
+    <div class="stats-grid">
+      
+        <div class="stat-card" onclick="filterCategory('キッチン・日用品')">
+          <div class="stat-icon">🍳</div>
+          <div class="stat-name">キッチン・日用品</div>
+          <div class="stat-count">2件</div>
+          <div class="stat-discount">最大 <strong>46%</strong>OFF</div>
+        </div>
+        <div class="stat-card" onclick="filterCategory('ゲーム')">
+          <div class="stat-icon">🎮</div>
+          <div class="stat-name">ゲーム</div>
+          <div class="stat-count">2件</div>
+          <div class="stat-discount">最大 <strong>37%</strong>OFF</div>
+        </div>
+        <div class="stat-card" onclick="filterCategory('スポーツ・アウトドア')">
+          <div class="stat-icon">⛺</div>
+          <div class="stat-name">スポーツ・アウトドア</div>
+          <div class="stat-count">2件</div>
+          <div class="stat-discount">最大 <strong>40%</strong>OFF</div>
+        </div>
+        <div class="stat-card" onclick="filterCategory('パソコン・周辺機器')">
+          <div class="stat-icon">💻</div>
+          <div class="stat-name">パソコン・周辺機器</div>
+          <div class="stat-count">3件</div>
+          <div class="stat-discount">最大 <strong>55%</strong>OFF</div>
+        </div>
+        <div class="stat-card" onclick="filterCategory('ビューティー・ヘルスケア')">
+          <div class="stat-icon">💄</div>
+          <div class="stat-name">ビューティー・ヘルスケア</div>
+          <div class="stat-count">1件</div>
+          <div class="stat-discount">最大 <strong>46%</strong>OFF</div>
+        </div>
+        <div class="stat-card" onclick="filterCategory('ファッション')">
+          <div class="stat-icon">👗</div>
+          <div class="stat-name">ファッション</div>
+          <div class="stat-count">1件</div>
+          <div class="stat-discount">最大 <strong>50%</strong>OFF</div>
+        </div>
+        <div class="stat-card" onclick="filterCategory('家電・カメラ')">
+          <div class="stat-icon">📷</div>
+          <div class="stat-name">家電・カメラ</div>
+          <div class="stat-count">3件</div>
+          <div class="stat-discount">最大 <strong>50%</strong>OFF</div>
+        </div>
+        <div class="stat-card" onclick="filterCategory('本・雑誌')">
+          <div class="stat-icon">📚</div>
+          <div class="stat-name">本・雑誌</div>
+          <div class="stat-count">1件</div>
+          <div class="stat-discount">最大 <strong>35%</strong>OFF</div>
+        </div>
+    </div>
+  </div>
+</section>
+
+<!-- メインコンテンツ -->
+<main class="container">
+
+  <!-- タブナビゲーション -->
+  <div class="tabs-wrapper">
+    <div class="tabs" id="category-tabs">
+      <button class="tab-btn active" data-tab="all">すべて</button>
+<button class="tab-btn" data-tab="ranking">🏆 ランキング</button>
+<button class="tab-btn" data-tab="キッチン・日用品">キッチン・日用品</button>
+<button class="tab-btn" data-tab="ゲーム">ゲーム</button>
+<button class="tab-btn" data-tab="スポーツ・アウトドア">スポーツ・アウトドア</button>
+<button class="tab-btn" data-tab="パソコン・周辺機器">パソコン・周辺機器</button>
+<button class="tab-btn" data-tab="ビューティー・ヘルスケア">ビューティー・ヘルスケア</button>
+<button class="tab-btn" data-tab="ファッション">ファッション</button>
+<button class="tab-btn" data-tab="家電・カメラ">家電・カメラ</button>
+<button class="tab-btn" data-tab="本・雑誌">本・雑誌</button>
+
+    </div>
+  </div>
+
+  <!-- 割引率フィルター -->
+  <div class="filter-bar" id="discount-filters">
+    <span class="filter-label">割引率で絞り込み:</span>
+    
+        <button class="filter-btn active" data-min="0">すべて</button>
+        <button class="filter-btn" data-min="50">🔥 50%以上</button>
+        <button class="filter-btn" data-min="30">⚡ 30%以上</button>
+        <button class="filter-btn" data-min="20">✨ 20%以上</button>
+        <button class="filter-btn" data-min="10">💡 10%以上</button>
+    
+    <div class="sort-select">
+      <select id="sort-order" onchange="sortProducts()">
+        <option value="discount">割引率が高い順</option>
+        <option value="price-low">価格が安い順</option>
+        <option value="price-high">価格が高い順</option>
+        <option value="rating">評価が高い順</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- ランキングパネル -->
+  <div class="tab-content" id="tab-ranking" style="display:none">
+    <h2 class="section-title">🏆 割引率ランキング TOP10</h2>
+    <div class="ranking-list">
+      <div class="rank-item"><span class="rank-num">#1</span><div class="rank-content"><a href="https://www.amazon.co.jp/dp/B08QBJ2YMG?tag=salematome0d-22" target="_blank" rel="nofollow noopener"><span class="rank-title">Samsung 870 EVO 1TB 2.5インチ SATA SSD...</span><span class="rank-discount">55%OFF</span></a></div></div>
+<div class="rank-item"><span class="rank-num">#2</span><div class="rank-content"><a href="https://www.amazon.co.jp/dp/B0D78JK314?tag=salematome0d-22" target="_blank" rel="nofollow noopener"><span class="rank-title">Anker PowerCore 10000 モバイルバッテリー 10000mAh...</span><span class="rank-discount">50%OFF</span></a></div></div>
+<div class="rank-item"><span class="rank-num">#3</span><div class="rank-content"><a href="https://www.amazon.co.jp/s?k=Columbia%20%E3%83%9E%E3%82%A6%E3%83%B3%E3%83%86%E3%83%B3%E3%83%91%E3%83%BC%E3%82%AB%E3%83%BC%20%E9%98%B2%E6%B0%B4%20%E3%83%A1%E3%83%B3%E3%82%BA&tag=salematome0d-22" target="_blank" rel="nofollow noopener"><span class="rank-title">Columbia 防水マウンテンパーカー アウトドアジャケット...</span><span class="rank-discount">50%OFF</span></a></div></div>
+<div class="rank-item"><span class="rank-num">#4</span><div class="rank-content"><a href="https://www.amazon.co.jp/s?k=Instant%20Pot%20%E9%9B%BB%E6%B0%97%E5%9C%A7%E5%8A%9B%E9%8D%8B%206L&tag=salematome0d-22" target="_blank" rel="nofollow noopener"><span class="rank-title">Instant Pot Duo 電気圧力鍋 6L 7-in-1 多機能クッカー...</span><span class="rank-discount">46%OFF</span></a></div></div>
+<div class="rank-item"><span class="rank-num">#5</span><div class="rank-content"><a href="https://www.amazon.co.jp/s?k=Oral-B%20iO%20Series%206%20%E9%9B%BB%E5%8B%95%E6%AD%AF%E3%83%96%E3%83%A9%E3%82%B7&tag=salematome0d-22" target="_blank" rel="nofollow noopener"><span class="rank-title">Oral-B iO Series 6 電動歯ブラシ スマート音波振動...</span><span class="rank-discount">46%OFF</span></a></div></div>
+<div class="rank-item"><span class="rank-num">#6</span><div class="rank-content"><a href="https://www.amazon.co.jp/s?k=ASUS%2024%E3%82%A4%E3%83%B3%E3%83%81%20%E3%82%B2%E3%83%BC%E3%83%9F%E3%83%B3%E3%82%B0%E3%83%A2%E3%83%8B%E3%82%BF%E3%83%BC%20144Hz&tag=salematome0d-22" target="_blank" rel="nofollow noopener"><span class="rank-title">ASUS 24インチ FHDゲーミングモニター 144Hz IPS VG249Q...</span><span class="rank-discount">43%OFF</span></a></div></div>
+<div class="rank-item"><span class="rank-num">#7</span><div class="rank-content"><a href="https://www.amazon.co.jp/dp/B09HM94VDS?tag=salematome0d-22" target="_blank" rel="nofollow noopener"><span class="rank-title">Logicool MX MASTER 3S ワイヤレスマウス 高性能 静音クリッ...</span><span class="rank-discount">41%OFF</span></a></div></div>
+<div class="rank-item"><span class="rank-num">#8</span><div class="rank-content"><a href="https://www.amazon.co.jp/s?k=Coleman%20%E3%83%84%E3%83%BC%E3%83%AA%E3%83%B3%E3%82%B0%E3%83%89%E3%83%BC%E3%83%A0%20ST%20%E3%83%86%E3%83%B3%E3%83%88&tag=salematome0d-22" target="_blank" rel="nofollow noopener"><span class="rank-title">Coleman ツーリングドーム ST ソロキャンプ 2人用テント...</span><span class="rank-discount">40%OFF</span></a></div></div>
+<div class="rank-item"><span class="rank-num">#9</span><div class="rank-content"><a href="https://www.amazon.co.jp/s?k=%E3%82%BC%E3%83%AB%E3%83%80%E3%81%AE%E4%BC%9D%E8%AA%AC%20%E3%83%86%E3%82%A3%E3%82%A2%E3%83%BC%E3%82%BA%E3%82%AA%E3%83%96%E3%82%B6%E3%82%AD%E3%83%B3%E3%82%B0%E3%83%80%E3%83%A0%20Switch&tag=salematome0d-22" target="_blank" rel="nofollow noopener"><span class="rank-title">ゼルダの伝説 ティアーズ オブ ザ キングダム Nintendo Switch...</span><span class="rank-discount">37%OFF</span></a></div></div>
+<div class="rank-item"><span class="rank-num">#10</span><div class="rank-content"><a href="https://www.amazon.co.jp/dp/B09Z2QYYD1?tag=salematome0d-22" target="_blank" rel="nofollow noopener"><span class="rank-title">Sony WH-1000XM5 ワイヤレスノイズキャンセリングヘッドフォン ブラ...</span><span class="rank-discount">35%OFF</span></a></div></div>
+    </div>
+  </div>
+
+  <!-- 商品グリッド -->
+  <div class="products-grid" id="products-grid">
+    
+        <div class="product-card tier-50" data-category="パソコン・周辺機器" data-discount="55">
+          <div class="card-badge">数量限定</div>
+          <div class="discount-badge">🔥 55%OFF</div>
+          <a href="https://www.amazon.co.jp/dp/B08QBJ2YMG?tag=salematome0d-22" target="_blank" rel="nofollow noopener">
+            <div class="product-image">
+              <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgMjAwIDIwMCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojMGYzNDYwIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3R5bGU9InN0b3AtY29sb3I6I2U5NDU2MDtzdG9wLW9wYWNpdHk6MC4zIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0idXJsKCNnKSIgcng9IjE2Ii8+CiAgPHRleHQgeD0iMTAwIiB5PSIxMTUiIGZvbnQtc2l6ZT0iOTAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPvCfkr48L3RleHQ+Cjwvc3ZnPg==" alt="Samsung 870 EVO 1TB 2.5インチ SATA SSD" loading="lazy">
+            </div>
+            <div class="product-info">
+              <h3 class="product-title">Samsung 870 EVO 1TB 2.5インチ SATA SSD</h3>
+              <div class="price-block">
+                <span class="original-price">¥19,800</span>
+                <span class="sale-price">¥8,980</span>
+                <span class="discount-tag">-55%</span>
+              </div>
+              <div class="savings">
+                <span>節約額: <strong>¥10,820</strong></span>
+              </div>
+              <div class="rating">
+                <span class="stars">★★★★⭐</span>
+                <span class="rating-value">4.6</span>
+                <span class="reviews">(12,300件)</span>
+              </div>
+              <div class="buy-btn">Amazonで見る →</div>
+            </div>
+          </a>
+        </div>
+
+        <div class="product-card tier-50" data-category="家電・カメラ" data-discount="50">
+          <div class="card-badge">タイムセール</div>
+          <div class="discount-badge">🔥 50%OFF</div>
+          <a href="https://www.amazon.co.jp/dp/B0D78JK314?tag=salematome0d-22" target="_blank" rel="nofollow noopener">
+            <div class="product-image">
+              <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgMjAwIDIwMCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojMWExYTJlIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3R5bGU9InN0b3AtY29sb3I6I2U5NDU2MDtzdG9wLW9wYWNpdHk6MC4zIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0idXJsKCNnKSIgcng9IjE2Ii8+CiAgPHRleHQgeD0iMTAwIiB5PSIxMTUiIGZvbnQtc2l6ZT0iOTAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPvCfk7E8L3RleHQ+Cjwvc3ZnPg==" alt="Anker PowerCore 10000 モバイルバッテリー 10000mAh 大容量 コンパクト" loading="lazy">
+            </div>
+            <div class="product-info">
+              <h3 class="product-title">Anker PowerCore 10000 モバイルバッテリー 10000mAh 大容量 コンパクト</h3>
+              <div class="price-block">
+                <span class="original-price">¥3,990</span>
+                <span class="sale-price">¥1,990</span>
+                <span class="discount-tag">-50%</span>
+              </div>
+              <div class="savings">
+                <span>節約額: <strong>¥2,000</strong></span>
+              </div>
+              <div class="rating">
+                <span class="stars">★★★★⭐</span>
+                <span class="rating-value">4.5</span>
+                <span class="reviews">(15,420件)</span>
+              </div>
+              <div class="buy-btn">Amazonで見る →</div>
+            </div>
+          </a>
+        </div>
+
+        <div class="product-card tier-50" data-category="ファッション" data-discount="50">
+          <div class="card-badge">50%OFF</div>
+          <div class="discount-badge">🔥 50%OFF</div>
+          <a href="https://www.amazon.co.jp/s?k=Columbia%20%E3%83%9E%E3%82%A6%E3%83%B3%E3%83%86%E3%83%B3%E3%83%91%E3%83%BC%E3%82%AB%E3%83%BC%20%E9%98%B2%E6%B0%B4%20%E3%83%A1%E3%83%B3%E3%82%BA&tag=salematome0d-22" target="_blank" rel="nofollow noopener">
+            <div class="product-image">
+              <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgMjAwIDIwMCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojMTYyMTNlIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3R5bGU9InN0b3AtY29sb3I6IzAwYjRkODtzdG9wLW9wYWNpdHk6MC4zIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0idXJsKCNnKSIgcng9IjE2Ii8+CiAgPHRleHQgeD0iMTAwIiB5PSIxMTUiIGZvbnQtc2l6ZT0iOTAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPvCfp6U8L3RleHQ+Cjwvc3ZnPg==" alt="Columbia 防水マウンテンパーカー アウトドアジャケット" loading="lazy">
+            </div>
+            <div class="product-info">
+              <h3 class="product-title">Columbia 防水マウンテンパーカー アウトドアジャケット</h3>
+              <div class="price-block">
+                <span class="original-price">¥22,000</span>
+                <span class="sale-price">¥11,000</span>
+                <span class="discount-tag">-50%</span>
+              </div>
+              <div class="savings">
+                <span>節約額: <strong>¥11,000</strong></span>
+              </div>
+              <div class="rating">
+                <span class="stars">★★★★☆</span>
+                <span class="rating-value">4.3</span>
+                <span class="reviews">(670件)</span>
+              </div>
+              <div class="buy-btn">Amazonで見る →</div>
+            </div>
+          </a>
+        </div>
+
+        <div class="product-card tier-30" data-category="キッチン・日用品" data-discount="46">
+          <div class="card-badge">タイムセール</div>
+          <div class="discount-badge">⚡ 46%OFF</div>
+          <a href="https://www.amazon.co.jp/s?k=Instant%20Pot%20%E9%9B%BB%E6%B0%97%E5%9C%A7%E5%8A%9B%E9%8D%8B%206L&tag=salematome0d-22" target="_blank" rel="nofollow noopener">
+            <div class="product-image">
+              <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgMjAwIDIwMCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojMWExYTJlIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3R5bGU9InN0b3AtY29sb3I6IzAwYjRkODtzdG9wLW9wYWNpdHk6MC4zIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0idXJsKCNnKSIgcng9IjE2Ii8+CiAgPHRleHQgeD0iMTAwIiB5PSIxMTUiIGZvbnQtc2l6ZT0iOTAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPvCfjbM8L3RleHQ+Cjwvc3ZnPg==" alt="Instant Pot Duo 電気圧力鍋 6L 7-in-1 多機能クッカー" loading="lazy">
+            </div>
+            <div class="product-info">
+              <h3 class="product-title">Instant Pot Duo 電気圧力鍋 6L 7-in-1 多機能クッカー</h3>
+              <div class="price-block">
+                <span class="original-price">¥14,800</span>
+                <span class="sale-price">¥7,980</span>
+                <span class="discount-tag">-46%</span>
+              </div>
+              <div class="savings">
+                <span>節約額: <strong>¥6,820</strong></span>
+              </div>
+              <div class="rating">
+                <span class="stars">★★★★⭐</span>
+                <span class="rating-value">4.5</span>
+                <span class="reviews">(9,870件)</span>
+              </div>
+              <div class="buy-btn">Amazonで見る →</div>
+            </div>
+          </a>
+        </div>
+
+        <div class="product-card tier-30" data-category="ビューティー・ヘルスケア" data-discount="46">
+          <div class="card-badge">タイムセール</div>
+          <div class="discount-badge">⚡ 46%OFF</div>
+          <a href="https://www.amazon.co.jp/s?k=Oral-B%20iO%20Series%206%20%E9%9B%BB%E5%8B%95%E6%AD%AF%E3%83%96%E3%83%A9%E3%82%B7&tag=salematome0d-22" target="_blank" rel="nofollow noopener">
+            <div class="product-image">
+              <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgMjAwIDIwMCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojMGYzNDYwIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3R5bGU9InN0b3AtY29sb3I6I2U5NDU2MDtzdG9wLW9wYWNpdHk6MC4zIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0idXJsKCNnKSIgcng9IjE2Ii8+CiAgPHRleHQgeD0iMTAwIiB5PSIxMTUiIGZvbnQtc2l6ZT0iOTAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPvCfqqU8L3RleHQ+Cjwvc3ZnPg==" alt="Oral-B iO Series 6 電動歯ブラシ スマート音波振動" loading="lazy">
+            </div>
+            <div class="product-info">
+              <h3 class="product-title">Oral-B iO Series 6 電動歯ブラシ スマート音波振動</h3>
+              <div class="price-block">
+                <span class="original-price">¥24,200</span>
+                <span class="sale-price">¥12,980</span>
+                <span class="discount-tag">-46%</span>
+              </div>
+              <div class="savings">
+                <span>節約額: <strong>¥11,220</strong></span>
+              </div>
+              <div class="rating">
+                <span class="stars">★★★★⭐</span>
+                <span class="rating-value">4.5</span>
+                <span class="reviews">(4,320件)</span>
+              </div>
+              <div class="buy-btn">Amazonで見る →</div>
+            </div>
+          </a>
+        </div>
+
+        <div class="product-card tier-30" data-category="パソコン・周辺機器" data-discount="43">
+          <div class="card-badge">タイムセール</div>
+          <div class="discount-badge">⚡ 43%OFF</div>
+          <a href="https://www.amazon.co.jp/s?k=ASUS%2024%E3%82%A4%E3%83%B3%E3%83%81%20%E3%82%B2%E3%83%BC%E3%83%9F%E3%83%B3%E3%82%B0%E3%83%A2%E3%83%8B%E3%82%BF%E3%83%BC%20144Hz&tag=salematome0d-22" target="_blank" rel="nofollow noopener">
+            <div class="product-image">
+              <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgMjAwIDIwMCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojMGYzNDYwIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3R5bGU9InN0b3AtY29sb3I6I2U5NDU2MDtzdG9wLW9wYWNpdHk6MC4zIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0idXJsKCNnKSIgcng9IjE2Ii8+CiAgPHRleHQgeD0iMTAwIiB5PSIxMTUiIGZvbnQtc2l6ZT0iOTAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPvCflqXvuI88L3RleHQ+Cjwvc3ZnPg==" alt="ASUS 24インチ FHDゲーミングモニター 144Hz IPS VG249Q" loading="lazy">
+            </div>
+            <div class="product-info">
+              <h3 class="product-title">ASUS 24インチ FHDゲーミングモニター 144Hz IPS VG249Q</h3>
+              <div class="price-block">
+                <span class="original-price">¥34,800</span>
+                <span class="sale-price">¥19,800</span>
+                <span class="discount-tag">-43%</span>
+              </div>
+              <div class="savings">
+                <span>節約額: <strong>¥15,000</strong></span>
+              </div>
+              <div class="rating">
+                <span class="stars">★★★★☆</span>
+                <span class="rating-value">4.4</span>
+                <span class="reviews">(3,210件)</span>
+              </div>
+              <div class="buy-btn">Amazonで見る →</div>
+            </div>
+          </a>
+        </div>
+
+        <div class="product-card tier-30" data-category="パソコン・周辺機器" data-discount="41">
+          <div class="card-badge">特価</div>
+          <div class="discount-badge">⚡ 41%OFF</div>
+          <a href="https://www.amazon.co.jp/dp/B09HM94VDS?tag=salematome0d-22" target="_blank" rel="nofollow noopener">
+            <div class="product-image">
+              <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgMjAwIDIwMCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojMGYzNDYwIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3R5bGU9InN0b3AtY29sb3I6I2U5NDU2MDtzdG9wLW9wYWNpdHk6MC4zIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0idXJsKCNnKSIgcng9IjE2Ii8+CiAgPHRleHQgeD0iMTAwIiB5PSIxMTUiIGZvbnQtc2l6ZT0iOTAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPvCflrHvuI88L3RleHQ+Cjwvc3ZnPg==" alt="Logicool MX MASTER 3S ワイヤレスマウス 高性能 静音クリック" loading="lazy">
+            </div>
+            <div class="product-info">
+              <h3 class="product-title">Logicool MX MASTER 3S ワイヤレスマウス 高性能 静音クリック</h3>
+              <div class="price-block">
+                <span class="original-price">¥16,500</span>
+                <span class="sale-price">¥9,800</span>
+                <span class="discount-tag">-41%</span>
+              </div>
+              <div class="savings">
+                <span>節約額: <strong>¥6,700</strong></span>
+              </div>
+              <div class="rating">
+                <span class="stars">★★★★⭐</span>
+                <span class="rating-value">4.8</span>
+                <span class="reviews">(5,670件)</span>
+              </div>
+              <div class="buy-btn">Amazonで見る →</div>
+            </div>
+          </a>
+        </div>
+
+        <div class="product-card tier-30" data-category="スポーツ・アウトドア" data-discount="40">
+          <div class="card-badge">シーズンセール</div>
+          <div class="discount-badge">⚡ 40%OFF</div>
+          <a href="https://www.amazon.co.jp/s?k=Coleman%20%E3%83%84%E3%83%BC%E3%83%AA%E3%83%B3%E3%82%B0%E3%83%89%E3%83%BC%E3%83%A0%20ST%20%E3%83%86%E3%83%B3%E3%83%88&tag=salematome0d-22" target="_blank" rel="nofollow noopener">
+            <div class="product-image">
+              <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgMjAwIDIwMCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojMGYzNDYwIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3R5bGU9InN0b3AtY29sb3I6IzAwYjRkODtzdG9wLW9wYWNpdHk6MC4zIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0idXJsKCNnKSIgcng9IjE2Ii8+CiAgPHRleHQgeD0iMTAwIiB5PSIxMTUiIGZvbnQtc2l6ZT0iOTAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPuKbujwvdGV4dD4KPC9zdmc+" alt="Coleman ツーリングドーム ST ソロキャンプ 2人用テント" loading="lazy">
+            </div>
+            <div class="product-info">
+              <h3 class="product-title">Coleman ツーリングドーム ST ソロキャンプ 2人用テント</h3>
+              <div class="price-block">
+                <span class="original-price">¥29,800</span>
+                <span class="sale-price">¥17,800</span>
+                <span class="discount-tag">-40%</span>
+              </div>
+              <div class="savings">
+                <span>節約額: <strong>¥12,000</strong></span>
+              </div>
+              <div class="rating">
+                <span class="stars">★★★★☆</span>
+                <span class="rating-value">4.4</span>
+                <span class="reviews">(1,890件)</span>
+              </div>
+              <div class="buy-btn">Amazonで見る →</div>
+            </div>
+          </a>
+        </div>
+
+        <div class="product-card tier-30" data-category="ゲーム" data-discount="37">
+          <div class="card-badge">セール</div>
+          <div class="discount-badge">⚡ 37%OFF</div>
+          <a href="https://www.amazon.co.jp/s?k=%E3%82%BC%E3%83%AB%E3%83%80%E3%81%AE%E4%BC%9D%E8%AA%AC%20%E3%83%86%E3%82%A3%E3%82%A2%E3%83%BC%E3%82%BA%E3%82%AA%E3%83%96%E3%82%B6%E3%82%AD%E3%83%B3%E3%82%B0%E3%83%80%E3%83%A0%20Switch&tag=salematome0d-22" target="_blank" rel="nofollow noopener">
+            <div class="product-image">
+              <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgMjAwIDIwMCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojMTYyMTNlIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3R5bGU9InN0b3AtY29sb3I6I2U5NDU2MDtzdG9wLW9wYWNpdHk6MC4zIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0idXJsKCNnKSIgcng9IjE2Ii8+CiAgPHRleHQgeD0iMTAwIiB5PSIxMTUiIGZvbnQtc2l6ZT0iOTAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPvCfjq48L3RleHQ+Cjwvc3ZnPg==" alt="ゼルダの伝説 ティアーズ オブ ザ キングダム Nintendo Switch" loading="lazy">
+            </div>
+            <div class="product-info">
+              <h3 class="product-title">ゼルダの伝説 ティアーズ オブ ザ キングダム Nintendo Switch</h3>
+              <div class="price-block">
+                <span class="original-price">¥8,778</span>
+                <span class="sale-price">¥5,500</span>
+                <span class="discount-tag">-37%</span>
+              </div>
+              <div class="savings">
+                <span>節約額: <strong>¥3,278</strong></span>
+              </div>
+              <div class="rating">
+                <span class="stars">★★★★⭐</span>
+                <span class="rating-value">4.9</span>
+                <span class="reviews">(45,600件)</span>
+              </div>
+              <div class="buy-btn">Amazonで見る →</div>
+            </div>
+          </a>
+        </div>
+
+        <div class="product-card tier-30" data-category="家電・カメラ" data-discount="35">
+          <div class="card-badge">週末セール</div>
+          <div class="discount-badge">⚡ 35%OFF</div>
+          <a href="https://www.amazon.co.jp/dp/B09Z2QYYD1?tag=salematome0d-22" target="_blank" rel="nofollow noopener">
+            <div class="product-image">
+              <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgMjAwIDIwMCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojMWExYTJlIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3R5bGU9InN0b3AtY29sb3I6I2U5NDU2MDtzdG9wLW9wYWNpdHk6MC4zIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0idXJsKCNnKSIgcng9IjE2Ii8+CiAgPHRleHQgeD0iMTAwIiB5PSIxMTUiIGZvbnQtc2l6ZT0iOTAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPvCfjqc8L3RleHQ+Cjwvc3ZnPg==" alt="Sony WH-1000XM5 ワイヤレスノイズキャンセリングヘッドフォン ブラック" loading="lazy">
+            </div>
+            <div class="product-info">
+              <h3 class="product-title">Sony WH-1000XM5 ワイヤレスノイズキャンセリングヘッドフォン ブラック</h3>
+              <div class="price-block">
+                <span class="original-price">¥59,400</span>
+                <span class="sale-price">¥38,500</span>
+                <span class="discount-tag">-35%</span>
+              </div>
+              <div class="savings">
+                <span>節約額: <strong>¥20,900</strong></span>
+              </div>
+              <div class="rating">
+                <span class="stars">★★★★⭐</span>
+                <span class="rating-value">4.7</span>
+                <span class="reviews">(8,930件)</span>
+              </div>
+              <div class="buy-btn">Amazonで見る →</div>
+            </div>
+          </a>
+        </div>
+
+        <div class="product-card tier-30" data-category="本・雑誌" data-discount="35">
+          <div class="card-badge">期間限定</div>
+          <div class="discount-badge">⚡ 35%OFF</div>
+          <a href="https://www.amazon.co.jp/s?k=Kindle%20Paperwhite%2016GB%20%E5%BA%83%E5%91%8A%E3%81%AA%E3%81%97&tag=salematome0d-22" target="_blank" rel="nofollow noopener">
+            <div class="product-image">
+              <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgMjAwIDIwMCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojMWExYTJlIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3R5bGU9InN0b3AtY29sb3I6I2U5NDU2MDtzdG9wLW9wYWNpdHk6MC4zIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0idXJsKCNnKSIgcng9IjE2Ii8+CiAgPHRleHQgeD0iMTAwIiB5PSIxMTUiIGZvbnQtc2l6ZT0iOTAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPvCfk5o8L3RleHQ+Cjwvc3ZnPg==" alt="Kindle Paperwhite (16GB) 6.8インチディスプレイ 広告なし" loading="lazy">
+            </div>
+            <div class="product-info">
+              <h3 class="product-title">Kindle Paperwhite (16GB) 6.8インチディスプレイ 広告なし</h3>
+              <div class="price-block">
+                <span class="original-price">¥22,980</span>
+                <span class="sale-price">¥14,980</span>
+                <span class="discount-tag">-35%</span>
+              </div>
+              <div class="savings">
+                <span>節約額: <strong>¥8,000</strong></span>
+              </div>
+              <div class="rating">
+                <span class="stars">★★★★⭐</span>
+                <span class="rating-value">4.6</span>
+                <span class="reviews">(45,600件)</span>
+              </div>
+              <div class="buy-btn">Amazonで見る →</div>
+            </div>
+          </a>
+        </div>
+
+        <div class="product-card tier-30" data-category="家電・カメラ" data-discount="34">
+          <div class="card-badge">Amazonセール</div>
+          <div class="discount-badge">⚡ 34%OFF</div>
+          <a href="https://www.amazon.co.jp/dp/B0CBKQZXT7?tag=salematome0d-22" target="_blank" rel="nofollow noopener">
+            <div class="product-image">
+              <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgMjAwIDIwMCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojMWExYTJlIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3R5bGU9InN0b3AtY29sb3I6I2U5NDU2MDtzdG9wLW9wYWNpdHk6MC4zIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0idXJsKCNnKSIgcng9IjE2Ii8+CiAgPHRleHQgeD0iMTAwIiB5PSIxMTUiIGZvbnQtc2l6ZT0iOTAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPvCflIo8L3RleHQ+Cjwvc3ZnPg==" alt="Sony WF-1000XM5 完全ワイヤレスノイズキャンセリングイヤホン" loading="lazy">
+            </div>
+            <div class="product-info">
+              <h3 class="product-title">Sony WF-1000XM5 完全ワイヤレスノイズキャンセリングイヤホン</h3>
+              <div class="price-block">
+                <span class="original-price">¥49,500</span>
+                <span class="sale-price">¥32,800</span>
+                <span class="discount-tag">-34%</span>
+              </div>
+              <div class="savings">
+                <span>節約額: <strong>¥16,700</strong></span>
+              </div>
+              <div class="rating">
+                <span class="stars">★★★★☆</span>
+                <span class="rating-value">4.4</span>
+                <span class="reviews">(12,100件)</span>
+              </div>
+              <div class="buy-btn">Amazonで見る →</div>
+            </div>
+          </a>
+        </div>
+
+        <div class="product-card tier-30" data-category="スポーツ・アウトドア" data-discount="34">
+          <div class="card-badge">特価</div>
+          <div class="discount-badge">⚡ 34%OFF</div>
+          <a href="https://www.amazon.co.jp/s?k=Garmin%20Forerunner%20255%20GPS%20%E3%83%A9%E3%83%B3%E3%83%8B%E3%83%B3%E3%82%B0%E3%82%A6%E3%82%A9%E3%83%83%E3%83%81&tag=salematome0d-22" target="_blank" rel="nofollow noopener">
+            <div class="product-image">
+              <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgMjAwIDIwMCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojMGYzNDYwIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3R5bGU9InN0b3AtY29sb3I6IzAwYjRkODtzdG9wLW9wYWNpdHk6MC4zIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0idXJsKCNnKSIgcng9IjE2Ii8+CiAgPHRleHQgeD0iMTAwIiB5PSIxMTUiIGZvbnQtc2l6ZT0iOTAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPuKMmjwvdGV4dD4KPC9zdmc+" alt="Garmin Forerunner 255 GPSスマートウォッチ ランニング" loading="lazy">
+            </div>
+            <div class="product-info">
+              <h3 class="product-title">Garmin Forerunner 255 GPSスマートウォッチ ランニング</h3>
+              <div class="price-block">
+                <span class="original-price">¥49,800</span>
+                <span class="sale-price">¥32,800</span>
+                <span class="discount-tag">-34%</span>
+              </div>
+              <div class="savings">
+                <span>節約額: <strong>¥17,000</strong></span>
+              </div>
+              <div class="rating">
+                <span class="stars">★★★★⭐</span>
+                <span class="rating-value">4.6</span>
+                <span class="reviews">(2,340件)</span>
+              </div>
+              <div class="buy-btn">Amazonで見る →</div>
+            </div>
+          </a>
+        </div>
+
+        <div class="product-card tier-30" data-category="ゲーム" data-discount="32">
+          <div class="card-badge">ポイントUP</div>
+          <div class="discount-badge">⚡ 32%OFF</div>
+          <a href="https://www.amazon.co.jp/s?k=%E3%82%B9%E3%83%BC%E3%83%91%E3%83%BC%E3%83%9E%E3%83%AA%E3%82%AA%E3%83%96%E3%83%A9%E3%82%B6%E3%83%BC%E3%82%BA%20%E3%83%AF%E3%83%B3%E3%83%80%E3%83%BC%20Switch&tag=salematome0d-22" target="_blank" rel="nofollow noopener">
+            <div class="product-image">
+              <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgMjAwIDIwMCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojMTYyMTNlIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3R5bGU9InN0b3AtY29sb3I6I2U5NDU2MDtzdG9wLW9wYWNpdHk6MC4zIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0idXJsKCNnKSIgcng9IjE2Ii8+CiAgPHRleHQgeD0iMTAwIiB5PSIxMTUiIGZvbnQtc2l6ZT0iOTAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPvCflbnvuI88L3RleHQ+Cjwvc3ZnPg==" alt="スーパーマリオブラザーズ ワンダー Nintendo Switch" loading="lazy">
+            </div>
+            <div class="product-info">
+              <h3 class="product-title">スーパーマリオブラザーズ ワンダー Nintendo Switch</h3>
+              <div class="price-block">
+                <span class="original-price">¥6,578</span>
+                <span class="sale-price">¥4,480</span>
+                <span class="discount-tag">-32%</span>
+              </div>
+              <div class="savings">
+                <span>節約額: <strong>¥2,098</strong></span>
+              </div>
+              <div class="rating">
+                <span class="stars">★★★★⭐</span>
+                <span class="rating-value">4.8</span>
+                <span class="reviews">(28,900件)</span>
+              </div>
+              <div class="buy-btn">Amazonで見る →</div>
+            </div>
+          </a>
+        </div>
+
+        <div class="product-card tier-30" data-category="キッチン・日用品" data-discount="32">
+          <div class="card-badge">数量限定</div>
+          <div class="discount-badge">⚡ 32%OFF</div>
+          <a href="https://www.amazon.co.jp/s?k=Dyson%20V12%20Detect%20Slim%20%E3%82%B3%E3%83%BC%E3%83%89%E3%83%AC%E3%82%B9&tag=salematome0d-22" target="_blank" rel="nofollow noopener">
+            <div class="product-image">
+              <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgMjAwIDIwMCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojMWExYTJlIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3R5bGU9InN0b3AtY29sb3I6IzAwYjRkODtzdG9wLW9wYWNpdHk6MC4zIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0idXJsKCNnKSIgcng9IjE2Ii8+CiAgPHRleHQgeD0iMTAwIiB5PSIxMTUiIGZvbnQtc2l6ZT0iOTAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiPvCfp7k8L3RleHQ+Cjwvc3ZnPg==" alt="Dyson V12 Detect Slim コードレスクリーナー" loading="lazy">
+            </div>
+            <div class="product-info">
+              <h3 class="product-title">Dyson V12 Detect Slim コードレスクリーナー</h3>
+              <div class="price-block">
+                <span class="original-price">¥94,800</span>
+                <span class="sale-price">¥64,800</span>
+                <span class="discount-tag">-32%</span>
+              </div>
+              <div class="savings">
+                <span>節約額: <strong>¥30,000</strong></span>
+              </div>
+              <div class="rating">
+                <span class="stars">★★★★⭐</span>
+                <span class="rating-value">4.7</span>
+                <span class="reviews">(3,450件)</span>
+              </div>
+              <div class="buy-btn">Amazonで見る →</div>
+            </div>
+          </a>
+        </div>
+  </div>
+
+  <div class="no-results" id="no-results" style="display:none">
+    <p>条件に合う商品が見つかりませんでした</p>
+  </div>
+
+</main>
+
+<!-- フッター -->
+<footer class="site-footer">
+  <div class="container">
+    <p>※ このページはAmazonアソシエイトプログラムに参加しています</p>
+    <p>※ 価格は変動する場合があります。購入前にAmazonで最新価格をご確認ください</p>
+    <p>最終更新: 2026年06月02日 08:55</p>
+  </div>
+</footer>
+
+<script>
+// --- タブ切り替え ---
+function filterCategory(cat) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  const btn = [...document.querySelectorAll('.tab-btn')].find(b => b.dataset.tab === cat);
+  if (btn) btn.classList.add('active');
+  applyFilters();
+}
+
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    const tab = btn.dataset.tab;
+    const rankingPanel = document.getElementById('tab-ranking');
+    const grid = document.getElementById('products-grid');
+    const filterBar = document.getElementById('discount-filters');
+
+    if (tab === 'ranking') {
+      rankingPanel.style.display = 'block';
+      grid.style.display = 'none';
+      filterBar.style.display = 'none';
+    } else {
+      rankingPanel.style.display = 'none';
+      grid.style.display = 'grid';
+      filterBar.style.display = 'flex';
+      applyFilters();
+    }
+  });
+});
+
+// --- 割引率フィルター ---
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  });
+});
+
+function applyFilters() {
+  const activeTab = document.querySelector('.tab-btn.active')?.dataset.tab || 'all';
+  const minDiscount = parseInt(document.querySelector('.filter-btn.active')?.dataset.min || 0);
+  const cards = document.querySelectorAll('.product-card');
+  let visible = 0;
+
+  cards.forEach(card => {
+    const cat = card.dataset.category;
+    const discount = parseInt(card.dataset.discount);
+    const catMatch = activeTab === 'all' || cat === activeTab;
+    const discountMatch = discount >= minDiscount;
+    if (catMatch && discountMatch) {
+      card.style.display = 'block';
+      visible++;
+    } else {
+      card.style.display = 'none';
+    }
+  });
+
+  document.getElementById('no-results').style.display = visible === 0 ? 'block' : 'none';
+}
+
+// --- ソート ---
+function sortProducts() {
+  const order = document.getElementById('sort-order').value;
+  const grid = document.getElementById('products-grid');
+  const cards = [...grid.querySelectorAll('.product-card')];
+
+  cards.sort((a, b) => {
+    if (order === 'discount') return parseInt(b.dataset.discount) - parseInt(a.dataset.discount);
+    if (order === 'price-low') return getPriceFromCard(a) - getPriceFromCard(b);
+    if (order === 'price-high') return getPriceFromCard(b) - getPriceFromCard(a);
+    if (order === 'rating') return getRatingFromCard(b) - getRatingFromCard(a);
+    return 0;
+  });
+
+  cards.forEach(c => grid.appendChild(c));
+}
+
+function getPriceFromCard(card) {
+  const price = card.querySelector('.sale-price')?.textContent.replace(/[¥,]/g, '') || '0';
+  return parseInt(price);
+}
+
+function getRatingFromCard(card) {
+  const r = card.querySelector('.rating-value')?.textContent || '0';
+  return parseFloat(r);
+}
+
+// カウントダウンタイマー（次回更新まで）
+function updateCountdown() {
+  const now = new Date();
+  const next = new Date(now);
+  next.setHours(next.getHours() + 1, 0, 0, 0);
+  const diff = next - now;
+  const min = Math.floor(diff / 60000);
+  const sec = Math.floor((diff % 60000) / 1000);
+  const el = document.getElementById('countdown');
+  if (el) el.textContent = `次回更新まで ${min}分${sec}秒`;
+  setTimeout(updateCountdown, 1000);
+}
+updateCountdown();
+</script>
+
+</body>
+</html>
